@@ -1,0 +1,121 @@
+name: epic_stream
+description: A production-grade OTT streaming platform foundation.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # Firebase
+  firebase_core: ^2.24.2
+  firebase_auth: ^4.15.3
+  cloud_firestore: ^4.13.6
+  firebase_storage: ^11.5.6
+  cloud_functions: ^4.5.3
+  firebase_messaging: ^14.7.9
+  firebase_analytics: ^10.7.4
+  firebase_crashlytics: ^3.4.8
+  firebase_performance: ^0.9.3+13
+  firebase_app_check: ^0.2.1+10
+
+  # Authentication
+  google_sign_in: ^6.1.6
+  pinput: ^4.0.0
+  intl_phone_field: ^3.2.0
+
+  # State Management
+  provider: ^6.1.1
+  get_it: ^7.6.4
+
+  # Navigation
+  go_router: ^12.1.3
+
+  # Video Player
+  better_player_plus: ^1.1.5
+
+  # Media & UI
+  cached_network_image: ^3.3.0
+  flutter_svg: ^2.0.9
+  image_picker: ^1.0.4
+  file_picker: ^10.3.2
+  lottie: ^3.1.0
+  shimmer: ^3.0.0
+  flutter_blurhash: ^0.8.2
+
+  # Networking
+  dio: ^5.3.3
+  connectivity_plus: ^5.0.2
+
+  # Local Storage
+  shared_preferences: ^2.2.2
+  flutter_secure_storage: ^9.0.0
+  path_provider: ^2.1.1
+
+  # Notifications & Permissions
+  flutter_local_notifications: ^17.2.1
+  permission_handler: ^11.1.0
+
+  # Device & Utils
+  package_info_plus: ^9.0.1
+  device_info_plus: ^10.1.0
+  intl: ^0.20.2
+  uuid: ^4.2.2
+  crypto: ^3.0.3
+  logger: ^2.0.2
+  equatable: ^2.0.5
+  dartz: ^0.10.1
+  google_fonts: ^6.1.0
+  share_plus: ^10.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+  build_runner: ^2.4.7
+  freezed: ^2.4.5
+  json_serializable: ^6.7.1
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.4.3
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - assets/animations/
+    - assets/banners/
+    - assets/categories/
+    - assets/fonts/
+    - assets/icons/
+    - assets/images/
+    - assets/logos/
+    - assets/movie_logos/
+    - assets/posters/
+    - assets/profile/
+    - assets/svg/
+    - assets/lang/
+
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-Medium.ttf
+        - asset: assets/fonts/Poppins-Bold.ttf
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon.png"
+  min_sdk_android: 21
+
+flutter_native_splash:
+  color: "#121212"
+  image: assets/images/splash_logo.png
+  android: true
+  ios: true

@@ -1,0 +1,86 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // --- HELPER FUNCTIONS ---
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && request.auth.token.admin == true;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isImage() {
+      return request.resource.contentType.matches('image/.*');
+    }
+
+    function isVideo() {
+      return request.resource.contentType.matches('video/.*') || 
+             request.resource.contentType == 'application/x-mpegURL' || 
+             request.resource.contentType == 'application/vnd.apple.mpegurl';
+    }
+
+    function isSubtitle() {
+      return request.resource.contentType.matches('text/.*') || 
+             request.resource.contentType == 'application/octet-stream';
+    }
+
+    // --- FOLDER RULES ---
+
+    // 1. PUBLIC ASSETS (Read by everyone, Write by Admin)
+    match /posters/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin() && isImage() && request.resource.size < 5 * 1024 * 1024;
+    }
+    
+    match /banners/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin() && isImage() && request.resource.size < 10 * 1024 * 1024;
+    }
+    
+    match /category_images/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin() && isImage();
+    }
+
+    match /genre_images/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin() && isImage();
+    }
+
+    // 2. PROTECTED CONTENT (Read by Auth users, Write by Admin)
+    match /trailers/{allPaths=**} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin() && isVideo() && request.resource.size < 100 * 1024 * 1024;
+    }
+
+    match /subtitles/{allPaths=**} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin() && isSubtitle();
+    }
+
+    // 3. USER DATA
+    match /profile_images/{userId}/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId) && isImage() && request.resource.size < 2 * 1024 * 1024;
+      allow delete: if isOwner(userId) || isAdmin();
+    }
+
+    // 4. REPORTS & EXPORTS (Admin Only)
+    match /reports/{allPaths=**} {
+      allow read, write: if isAdmin();
+    }
+
+    // GLOBAL DENY
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
